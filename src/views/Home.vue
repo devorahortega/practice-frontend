@@ -1,18 +1,35 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <h1>All Users</h1>
+    <div v-for="user in users" v-bind:key="user.id">
+      <h2>{{ user.name }}</h2>
+      <img v-bind:src="user.url" v-bind:alt="user.name" />
+      <p>Width: {{ user.width }}</p>
+      <p>Height: {{ user.height }}</p>
+    </div>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+<style></style>
 
+<script>
+import axios from "axios";
 export default {
-  name: "Home",
-  components: {
-    HelloWorld,
+  data: function () {
+    return {
+      users: [],
+    };
+  },
+  created: function () {
+    this.indexUser();
+  },
+  methods: {
+    indexUser: function () {
+      axios.get("/users").then((response) => {
+        console.log("users index", response);
+        this.users = response.data;
+      });
+    },
   },
 };
 </script>
